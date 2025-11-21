@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sfondo generale blu (niente più immagine fissa sotto il video) */
+.chip-grid {
+  background: linear-gradient(
+    to bottom right,
+    rgba(11, 39, 64, 0.95),
+    rgba(11, 39, 64, 0.92)
+  );
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* effetto “parallax” leggero */
+}
+
+/* Griglia + circuiti + nodi luminosi */
+.circuit-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    /* linee orizzontali */
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.12) 0px,
+      rgba(255, 255, 255, 0.12) 1px,
+      transparent 1px,
+      transparent 70px
+    ),
+
+    /* linee verticali */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12) 0px,
+      rgba(255, 255, 255, 0.12) 1px,
+      transparent 1px,
+      transparent 70px
+    ),
+
+    /* nodi elettronici */
+    radial-gradient(circle, rgba(0, 174, 239, 0.35) 0%, transparent 70%) 40px 60px,
+    radial-gradient(circle, rgba(126, 224, 129, 0.35) 0%, transparent 70%) 200px 160px,
+    radial-gradient(circle, rgba(0, 174, 239, 0.30) 0%, transparent 70%) 360px 100px,
+    radial-gradient(circle, rgba(126, 224, 129, 0.30) 0%, transparent 70%) 520px 240px;
+
+  background-size:
+    100% 100%,
+    100% 100%,
+    6px 6px,
+    8px 8px,
+    5px 5px,
+    7px 7px;
+
+  mix-blend-mode: soft-light;
+}
+
+/* Animazione fade-in (usata per il menu mobile) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out;
+}
