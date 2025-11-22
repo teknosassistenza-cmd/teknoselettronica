@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { MapPin } from "lucide-react";
+
 
 export function Hero() {
   return (
@@ -9,22 +11,29 @@ export function Hero() {
         {/* TESTO A SINISTRA */}
         <div>
           <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl font-extrabold leading-tight"
-          >
-            Officina meccatronica per{" "}
-            <span className="text-teknos-blue">
-              automotive, industriale, agricolo e mezzi d’opera
-            </span>
-          </motion.h1>
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+  className="text-4xl md:text-5xl font-extrabold leading-tight"
+>
+  Officina meccatronica per{" "}
+  <span className="text-teknos-blue">
+    automotive, industriale, agricolo e mezzi d’opera
+  </span>
+</motion.h1>
 
-          <p className="mt-4 text-lg text-white/80">
-            Diagnosi elettronica avanzata, programmazione e riparazione
-            centraline, impianti di post-trattamento gas di scarico e
-            climatizzazione. Interventi rapidi, documentati e risolutivi.
-          </p>
+{/* Badge posizione */}
+<div className="mt-3 inline-flex items-center gap-2 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white/80 border border-white/10">
+  <MapPin size={14} className="text-teknos-blue" />
+  <span>Serdiana (SU) • Sud Sardegna</span>
+</div>
+
+<p className="mt-4 text-lg text-white/80">
+  Diagnosi elettronica avanzata, programmazione e riparazione
+  centraline, impianti di post-trattamento gas di scarico e
+  climatizzazione. Interventi rapidi, documentati e risolutivi.
+</p>
+
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
