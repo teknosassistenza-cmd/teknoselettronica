@@ -4,11 +4,11 @@ import { Menu, X } from "lucide-react";
 const links = [
   { href: "#servizi", label: "Servizi" },
   { href: "#centraline", label: "Programmazioni centraline" },
-  { href: "#posttrattamento", label: "Post-trattamento" },
+  { href: "#post-trattamento", label: "Post-trattamento" }, // <- cambiato
   { href: "#clima", label: "Climatizzazione" },
   { href: "#settori", label: "Settori" },
   { href: "#recensioni", label: "Recensioni" },
-  { href: "#chisiamo", label: "Chi siamo" },
+  { href: "#chi-siamo", label: "Chi siamo" },                // <- cambiato
   { href: "#contatti", label: "Contatti" },
 ];
 
