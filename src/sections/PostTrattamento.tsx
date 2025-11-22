@@ -1,6 +1,6 @@
 export function PostTrattamento() {
   return (
-    <section id="post" className="mx-auto max-w-6xl px-4 py-16">
+    <section id="post-trattamento" className="mx-auto max-w-6xl px-4 py-16">
       <h2 className="text-3xl font-bold">Diagnostica impianti di post-trattamento</h2>
       <p className="mt-2 text-white/80 max-w-3xl">
         Gli impianti SCR/DPF sono essenziali per la conformità alle normative e, quando non
