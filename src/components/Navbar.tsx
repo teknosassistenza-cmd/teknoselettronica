@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Menu, X, MapPin } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { href: "#servizi", label: "Servizi" },
@@ -9,6 +8,7 @@ const links = [
   { href: "#clima", label: "Climatizzazione" },
   { href: "#settori", label: "Settori" },
   { href: "#recensioni", label: "Recensioni" },
+  { href: "#faq", label: "FAQ" },          // <--- nuovo
   { href: "#chisiamo", label: "Chi siamo" },
   { href: "#contatti", label: "Contatti" },
 ];
@@ -16,12 +16,17 @@ const links = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Blocca lo scroll della pagina con menù aperto
+  // blocca lo scroll quando il menù mobile è aperto
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (open) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
   }, [open]);
 
-  // Click su voce del menu → chiudi e scrolla
   const handleNavClick = (href: string) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -30,42 +35,41 @@ export function Navbar() {
 
   return (
     <>
-      {/* NAVBAR DESKTOP */}
-      <header className="fixed inset-x-0 top-0 z-40 bg-[#020817cc] backdrop-blur-md border-b border-white/5">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-
-          {/* LOGO + DOVE SIAMO */}
-          <a href="#top" className="flex items-center gap-3">
-            <img
-              src="/img/logo-teknos.png"
-              alt="Teknos"
-              className="h-8 w-auto"
-            />
-
-            {/* Iconcina Serdiana */}
-            <span className="hidden md:flex items-center gap-1 text-white/60 text-xs">
+      {/* NAVBAR FISSA */}
+      <header className="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-[#020817e6] to-[#020817aa] backdrop-blur-md border-b border-white/5">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
+          {/* Logo + posizione */}
+          <div className="flex flex-shrink-0 items-center gap-3">
+            <a href="#top" className="flex items-center">
+              <img
+                src="/img/logo-teknos.png"
+                alt="Teknos"
+                className="h-8 w-auto"
+              />
+            </a>
+            <div className="hidden sm:flex items-center gap-1 text-xs text-white/70">
               <MapPin size={14} className="text-teknos-blue" />
-              Serdiana, Sud Sardegna
-            </span>
-          </a>
+              <span>Serdiana (SU) · Sud Sardegna</span>
+            </div>
+          </div>
 
           {/* MENU DESKTOP */}
-          <nav className="hidden gap-6 text-sm font-medium md:flex">
+          <nav className="hidden md:flex flex-1 justify-center gap-5 lg:gap-7 text-sm font-medium">
             {links.map((link) => (
-              <a
+              <button
                 key={link.href}
-                href={link.href}
+                onClick={() => handleNavClick(link.href)}
                 className="text-white/80 hover:text-teknos-blue transition-colors"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
           </nav>
 
-          {/* BOTTONE CHIAMA */}
+          {/* BOTTONE DESKTOP “CHIAMA SUBITO” */}
           <a
             href="tel:+39070743134"
-            className="hidden rounded-full bg-teknos-blue px-4 py-2 text-sm font-semibold text-teknos-deep shadow md:inline-block"
+            className="hidden md:inline-flex flex-shrink-0 items-center rounded-full bg-teknos-blue px-4 py-2 text-xs lg:text-sm font-semibold text-teknos-deep shadow whitespace-nowrap"
           >
             Chiama subito
           </a>
@@ -73,59 +77,52 @@ export function Navbar() {
           {/* HAMBURGER MOBILE */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-full p-2 text-white md:hidden"
+            className="inline-flex items-center justify-center rounded-full p-2 text-white md:hidden ml-auto"
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X size={26} /> : <Menu size={26} />}
+            {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </header>
 
+      {/* SPAZIO sotto la navbar */}
       <div className="h-16" />
 
-      {/* MENU MOBILE */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="menuMobile"
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="
-              fixed inset-0 top-16 z-30 
-              overflow-y-auto
-              bg-[#020817f2]
-              bg-[url('/img/bg-circuit.jpg')]
-              bg-cover bg-center
-              bg-blend-overlay
-            "
-          >
-            {/* sfondo scuro leggero */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      {/* MENÙ MOBILE A TENDINA */}
+      {open && (
+        <div
+          className="
+            fixed inset-0 top-16 z-30
+            overflow-y-auto
+            bg-[#020817f5]
+            bg-[url('/img/bg-circuit.jpg')]
+            bg-cover bg-center bg-no-repeat
+            bg-blend-overlay
+          "
+        >
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" />
 
-            <nav className="relative mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6">
-              {links.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="w-full rounded-2xl bg-black/40 px-4 py-4 text-left text-base font-semibold text-white/90 border border-white/10 hover:bg-white/5 transition"
-                >
-                  {link.label}
-                </button>
-              ))}
-
-              <a
-                href="tel:+39070743134"
-                className="mt-4 w-full rounded-2xl bg-teknos-blue px-4 py-3 text-center text-base font-semibold text-teknos-deep shadow"
-                onClick={() => setOpen(false)}
+          <nav className="relative mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 animate-fadeIn">
+            {links.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => handleNavClick(link.href)}
+                className="w-full rounded-2xl bg-black/40 px-4 py-4 text-left text-base font-semibold text-white/90 border border-white/5 hover:bg-white/5 transition-colors"
               >
-                Chiama subito
-              </a>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {link.label}
+              </button>
+            ))}
+
+            <a
+              href="tel:+39070743134"
+              className="mt-4 w-full rounded-2xl bg-teknos-blue px-4 py-3 text-center text-base font-semibold text-teknos-deep shadow"
+              onClick={() => setOpen(false)}
+            >
+              Chiama subito
+            </a>
+          </nav>
+        </div>
+      )}
     </>
   );
 }

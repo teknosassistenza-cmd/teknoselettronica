@@ -11,6 +11,8 @@ import { Reviews } from "./sections/Reviews";
 import { About } from "./sections/About";
 import { Contact } from "./sections/Contact";
 import { Footer } from "./sections/Footer";
+import { WhatsAppButton } from "./components/WhatsAppButton";
+import { Faq } from "./sections/Faq";
 
 export default function App() {
   useEffect(() => {
@@ -54,10 +56,13 @@ export default function App() {
         <PostTrattamento />
         <Clima />
         <Sectors />
+        <Faq />
         <Reviews />
         <About />
         <Contact />
         <Footer />
+        <WhatsAppButton />
+
       </div>
     </div>
   );
