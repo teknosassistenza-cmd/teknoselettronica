@@ -8,7 +8,7 @@ const links = [
   { href: "#clima", label: "Climatizzazione" },
   { href: "#settori", label: "Settori" },
   { href: "#recensioni", label: "Recensioni" },
-  { href: "#Faq", label: "FAQ" },          // <--- nuovo
+  { href: "#faq", label: "FAQ" },          // <--- nuovo
   { href: "#chisiamo", label: "Chi siamo" },
   { href: "#contatti", label: "Contatti" },
 ];
