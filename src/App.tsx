@@ -16,15 +16,35 @@ import { Faq } from "./sections/Faq";
 
 export default function App() {
   useEffect(() => {
-    // Smooth scroll per i link con href="#..."
+    // Smooth scroll per tutti i link con href che inizia per "#"
     const handler = (e: Event) => {
-      const t = e.target as HTMLAnchorElement;
-      if (t.tagName === "A" && t.getAttribute("href")?.startsWith("#")) {
-        e.preventDefault();
-        const id = t.getAttribute("href")!.slice(1);
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      }
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // Trova l'anchor più vicino (nel caso clicchi su span/testo dentro <a>)
+      const anchor = target.closest("a") as HTMLAnchorElement | null;
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+
+      const id = href.slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      e.preventDefault();
+
+      // Altezza approssimativa della navbar
+      const headerOffset = 80;
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.scrollY + rect.top - headerOffset;
+
+      window.scrollTo({
+        top: scrollTop,
+        behavior: "smooth",
+      });
     };
+
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
   }, []);
@@ -62,7 +82,6 @@ export default function App() {
         <Contact />
         <Footer />
         <WhatsAppButton />
-
       </div>
     </div>
   );

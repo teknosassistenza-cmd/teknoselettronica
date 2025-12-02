@@ -68,7 +68,7 @@ export function Navbar() {
 
           {/* BOTTONE DESKTOP “CHIAMA SUBITO” */}
           <a
-            href="tel:+39070743134"
+            href="tel:‪+39070743134‬"
             className="hidden md:inline-flex flex-shrink-0 items-center rounded-full bg-teknos-blue px-4 py-2 text-xs lg:text-sm font-semibold text-teknos-deep shadow whitespace-nowrap"
           >
             Chiama subito
@@ -123,6 +123,6 @@ export function Navbar() {
           </nav>
         </div>
       )}
-    </>
-  );
+    </>
+  );
 }

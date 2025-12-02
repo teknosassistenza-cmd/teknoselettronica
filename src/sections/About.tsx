@@ -1,7 +1,7 @@
 export function About() {
   return (
     <section
-      id="chi-siamo"
+      id="chisiamo"
       className="relative border-t border-white/10 bg-[#020817]/90"
     >
       <div className="mx-auto max-w-6xl px-4 py-12 md:py-16 grid gap-10 md:grid-cols-2 items-start">
