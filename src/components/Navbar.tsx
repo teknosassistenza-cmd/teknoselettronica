@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, MapPin } from "lucide-react";
+import { trackEvent } from "../lib/analytics";
+
 
 const links = [
   { href: "#servizi", label: "Servizi" },
@@ -8,7 +10,7 @@ const links = [
   { href: "#clima", label: "Climatizzazione" },
   { href: "#settori", label: "Settori" },
   { href: "#recensioni", label: "Recensioni" },
-  { href: "#faq", label: "FAQ" },          // <--- nuovo
+  { href: "#faq", label: "FAQ" },
   { href: "#chisiamo", label: "Chi siamo" },
   { href: "#contatti", label: "Contatti" },
 ];
@@ -16,68 +18,75 @@ const links = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // blocca lo scroll quando il menù mobile è aperto
+  // Blocca lo scroll del body quando il menu mobile è aperto
   useEffect(() => {
-    if (open) {
-      const original = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = original;
-      };
-    }
-  }, [open]);
+    if (!open) return;
 
-  const handleNavClick = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-    setOpen(false);
-  };
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
 
   return (
     <>
-      {/* NAVBAR FISSA */}
+      {/* BARRA FISSA IN ALTO */}
       <header className="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-[#020817e6] to-[#020817aa] backdrop-blur-md border-b border-white/5">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo + posizione */}
-          <div className="flex flex-shrink-0 items-center gap-3">
-            <a href="#top" className="flex items-center">
-              <img
-                src="/img/logo-teknos.png"
-                alt="Teknos"
-                className="h-8 w-auto"
-              />
-            </a>
-            <div className="hidden sm:flex items-center gap-1 text-xs text-white/70">
+          <a href="#top" className="flex items-center gap-3">
+            <img
+              src="/img/logo-teknos.png"
+              alt="Teknos"
+              className="h-8 w-auto"
+            />
+            <span className="hidden sm:inline-flex items-center gap-1 text-xs text-white/70">
               <MapPin size={14} className="text-teknos-blue" />
-              <span>Serdiana (SU) · Sud Sardegna</span>
-            </div>
-          </div>
-
-          {/* MENU DESKTOP */}
-          <nav className="hidden md:flex flex-1 justify-center gap-5 lg:gap-7 text-sm font-medium">
-            {links.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link.href)}
-                className="text-white/80 hover:text-teknos-blue transition-colors"
-              >
-                {link.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* BOTTONE DESKTOP “CHIAMA SUBITO” */}
-          <a
-            href="tel:‪+39070743134‬"
-            className="hidden md:inline-flex flex-shrink-0 items-center rounded-full bg-teknos-blue px-4 py-2 text-xs lg:text-sm font-semibold text-teknos-deep shadow whitespace-nowrap"
-          >
-            Chiama subito
+              Serdiana (SU) · Sud Sardegna
+            </span>
           </a>
 
-          {/* HAMBURGER MOBILE */}
+          {/* Menu desktop */}
+          <nav className="hidden md:flex gap-6 text-sm font-medium">
+  {links.map((link) => (
+    <a
+      key={link.href}
+      href={link.href}
+      className="text-white/80 hover:text-teknos-blue transition-colors"
+      onClick={() =>
+        trackEvent("click_menu_voce", {
+          event_category: "navbar",
+          event_label: link.label
+        })
+      }
+    >
+      {link.label}
+    </a>
+  ))}
+</nav>
+
+
+          {/* Pulsante telefono desktop */}
+          <a
+  href="tel:+39070743134"
+  className="hidden md:inline-flex items-center rounded-full bg-teknos-blue px-4 py-2 text-xs lg:text-sm font-semibold text-teknos-deep shadow whitespace-nowrap"
+  onClick={() =>
+    trackEvent("click_chiama_subito", {
+      event_category: "contatto",
+      event_label: "navbar"
+    })
+  }
+>
+  Chiama subito
+</a>
+
+
+          {/* Hamburger mobile */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-full p-2 text-white md:hidden ml-auto"
+            className="inline-flex items-center justify-center rounded-full p-2 text-white md:hidden"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
@@ -85,32 +94,29 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* SPAZIO sotto la navbar */}
+      {/* Spazio sotto la navbar per non coprire l'hero */}
       <div className="h-16" />
 
-      {/* MENÙ MOBILE A TENDINA */}
+      {/* MENU MOBILE A TENDINA */}
       {open && (
-        <div
-          className="
-            fixed inset-0 top-16 z-30
-            overflow-y-auto
-            bg-[#020817f5]
-            bg-[url('/img/bg-circuit.jpg')]
-            bg-cover bg-center bg-no-repeat
-            bg-blend-overlay
-          "
-        >
-          <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" />
-
-          <nav className="relative mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 animate-fadeIn">
+        <div className="fixed inset-0 top-16 z-30 overflow-y-auto bg-[#020817f0] animate-fadeIn">
+          <nav className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6">
             {links.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link.href)}
-                className="w-full rounded-2xl bg-black/40 px-4 py-4 text-left text-base font-semibold text-white/90 border border-white/5 hover:bg-white/5 transition-colors"
-              >
-                {link.label}
-              </button>
+              <a
+  key={link.href}
+  href={link.href}
+  className="w-full rounded-2xl bg-white/5 px-4 py-4 text-left text-base font-semibold text-white/90 border border-white/10 hover:bg.white/10 transition-colors"
+  onClick={() => {
+    trackEvent("click_menu_voce_mobile", {
+      event_category: "navbar_mobile",
+      event_label: link.label
+    });
+    setOpen(false);
+  }}
+>
+  {link.label}
+</a>
+
             ))}
 
             <a
@@ -123,6 +129,6 @@ export function Navbar() {
           </nav>
         </div>
       )}
-    </>
-  );
+    </>
+  );
 }

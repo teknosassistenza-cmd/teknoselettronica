@@ -1,4 +1,5 @@
 import { MessageCircle } from "lucide-react";
+import { trackEvent } from "../lib/analytics";
 
 export function WhatsAppButton() {
   return (
@@ -6,6 +7,12 @@ export function WhatsAppButton() {
       href="https://wa.me/393333215679?text=Ciao%20Teknos%2C%20avrei%20bisogno%20di%20informazioni%20per%20una%20diagnosi%2Fintervento."
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() =>
+        trackEvent("click_whatsapp", {
+          event_category: "contatto",
+          event_label: "floating_button"
+        })
+      }
       className="
         fixed bottom-4 right-4 z-40
         flex items-center gap-2
